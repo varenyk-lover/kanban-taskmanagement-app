@@ -9,7 +9,7 @@ import useDarkMode from "../Hooks/useDarkMode";
 import boardsSlice from "../redux/boardsSlice";
 
 
-function HeaderDropDown({setOpenDropdown, setIsBoardModalOpen}) {
+function HeaderDropDown({setOpenDropdown, setBoardModalOpen}) {
 
     const [colorTheme, setTheme] = useDarkMode();
     const [darkSide, setDarkSide] = useState(
@@ -56,8 +56,11 @@ function HeaderDropDown({setOpenDropdown, setIsBoardModalOpen}) {
                     ))}
 
                     <div
-
-                        className=" flex items-baseline space-x-2  text-[#635fc7] px-5 py-4  ">
+                        className="cursor-pointer flex items-baseline space-x-2  text-[#635fc7] px-5 py-4"
+                        onClick={() => {
+                            setBoardModalOpen(true);
+                            setOpenDropdown(false);
+                        }}>
                         <img src={boardIcon} className="   filter-white  h-4 "/>
                         <p className=" text-lg font-bold  ">
                             Create New Board

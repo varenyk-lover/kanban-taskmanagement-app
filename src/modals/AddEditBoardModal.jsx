@@ -1,8 +1,11 @@
 import React, {useState} from "react";
 import {v4 as uuidv4, validate} from "uuid";
 import crossIcon from "../assets/icon-cross.svg";
+import {useDispatch} from "react-redux";
+import boardsSlice from "../redux/boardsSlice";
 
 function AddEditBoardModal({setBoardModalOpen, type,}) {
+    const dispatch = useDispatch();
     const [name, setName] = useState("");
     const [newColumns, setNewColumns] = useState(
         [
@@ -31,12 +34,22 @@ function AddEditBoardModal({setBoardModalOpen, type,}) {
             return false;
         }
 
-        for (let i = 0; i < name.length; i++) {
+        for (let i = 0; i < newColumns.length; i++) {
             if (!newColumns[i].name.trim()) {
                 return false;
             }
 
             setIsValid(true);
+            return true;
+        }
+    };
+
+    const onSubmit = () => {
+        setBoardModalOpen(false);
+        if (type === 'add') {
+            dispatch(boardsSlice.actions.addBoard({name, newColumns}))
+        } else {
+            dispatch(boardsSlice.actions.editBoard({name, newColumns}))
         }
     };
 
@@ -81,8 +94,8 @@ function AddEditBoardModal({setBoardModalOpen, type,}) {
                     {
                         newColumns.map((column, index) => (
                             <div key={index} className='flex items-center w-full'>
-                                <input className='bg-transparent flex-grow px-4 py-2 rounded-md text-sm border border-gray-600
-                        outline-none focus:outline-[#735fc7]' type="text" value={column.name}
+                                <input className='bg-transparent flex-grow px-4 py-2 rounded-md text-sm border
+                                 border-gray-600 outline-none focus:outline-[#735fc7]' type="text" value={column.name}
                                        onChange={(event) => {
                                            onChange(column.id, event.target.value);
                                        }}/>
@@ -106,10 +119,13 @@ function AddEditBoardModal({setBoardModalOpen, type,}) {
                     </button>
 
                     <button className='w-full items-center hover:opacity-75 dark:text-white dark:bg-[#635fc7] mt-8
-                    relative text-white bg-[#635fc7] py-2 rounded-full' onClick={() => {
-                        const isValid = validate();
-                    }
-                    }>
+                    relative text-white bg-[#635fc7] py-2 rounded-full'
+                            onClick={
+                                () => {
+                                    const isValid = validate();
+                                    if (isValid === true) onSubmit(type)
+                                }
+                            }>
                         {type === "add" ? "Create New Board" : "Save Changes"}
                     </button>
                 </div>

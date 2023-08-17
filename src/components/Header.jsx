@@ -39,19 +39,7 @@ const Header = ({setBoardModalOpen, boardModalOpen}) => {
                     </h3>
                     <div className=" flex items-center ">
                         <h3 className=" truncate max-w-[200px] md:text-2xl text-xl font-bold md:ml-20 font-sans  ">
-                            {/*{boards.map((board, index)=>{*/}
-                            {/*    if(board.isActive ) {*/}
-                            {/*    console.log(board.name)*/}
-                            {/*        // return boards[0].name*/}
-                            {/*        return board.name;*/}
-                            {/*    }*/}
-                            {/*    return boards[0].name;*/}
-                            {/*    }*/}
-
-                            {/*)}*/}
-                            {/*board.name*/}
-                            {board ? board.name : 'first render'}
-
+                            {board ? board.name : boards[0].name}
                         </h3>
                         <img
                             src={openDropdown ? iconUp : iconDown}

@@ -8,7 +8,7 @@ function AddEditBoardModal({setBoardModalOpen, type,}) {
     const dispatch = useDispatch();
     const [name, setName] = useState("");
     const [isValid, setIsValid] = useState(true);
-
+const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [newColumns, setNewColumns] = useState(
         [
             {name: "Todo", task: [], id: uuidv4()},
@@ -16,6 +16,9 @@ function AddEditBoardModal({setBoardModalOpen, type,}) {
         ]
     );
 
+    if(type === 'edit' && isFirstLoad) {
+        setNewColumns();
+    }
 
     const onChange = (id, newValue) => {
         setNewColumns((prevState) => {

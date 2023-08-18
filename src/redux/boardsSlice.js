@@ -69,6 +69,18 @@ const boardsSlice = createSlice({
             const board = state.find((board) => board.isActive);
             const prevCol = board.columns.find((col, i) => i === prevColIndex);
             const task = prevCol.tasks.splice(taskIndex, 1)[0];
+            /*Цей рядок коду виконує наступні дії:
+            1)prevCol.tasks - це масив, який містить завдання.
+            2).splice(draggedTaskIndex, 1) - метод splice видаляє елементи з масиву. В даному випадку, він видаляє один
+             елемент з масиву prevCol.tasks, починаючи з індексу draggedTaskIndex. Однак метод splice повертає масив
+              видалених елементів, тому ми видаляємо тільки один елемент, а не масив.
+            3)[0] - після виконання методу splice, ми отримуємо масив з видаленими елементами (в даному випадку, масив
+            з одним елементом). Зараз ми вибираємо перший (і єдиний) елемент з цього масиву, і це значення присвоюється
+             змінній draggedTask.
+            Тобто, цей рядок коду видаляє один елемент з масиву prevCol.tasks за індексом draggedTaskIndex і повертає
+             його значення, яке потім зберігається у змінній draggedTask. Це корисно, коли ви хочете зберегти видалений
+              елемент для подальшого використання, наприклад, для переміщення його на іншу позицію, як у випадку з
+              реалізацією методу drag and drop.*/
             board.columns.find((col, i) => i === colIndex).tasks.push(task);
         },
         setSubtaskCompleted: (state, action) => {

@@ -25,7 +25,7 @@ function App() {
                         {/* Header Section*/}
                         <Header boardModalOpen={boardModalOpen} setBoardModalOpen={setBoardModalOpen}/>
                         {/*Center Section*/}
-                        <Center/>
+                        <Center  boardModalOpen={boardModalOpen} setBoardModalOpen={setBoardModalOpen}/>
                     </>
                     :
                     <>

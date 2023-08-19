@@ -45,9 +45,9 @@ const Header = ({setBoardModalOpen, boardModalOpen}) => {
 
 
     const onDeleteBtnClick = () => {
-    dispatch(boardsSlice.actions.deleteBoard());
-    dispatch(boardsSlice.actions.setBoardActive({index: 0}));
-    setIsDeleteModalOpen(false);
+        dispatch(boardsSlice.actions.deleteBoard());
+        dispatch(boardsSlice.actions.setBoardActive({index: 0}));
+        setIsDeleteModalOpen(false);
     };
 
     return (
@@ -57,11 +57,12 @@ const Header = ({setBoardModalOpen, boardModalOpen}) => {
                 <div className=" flex items-center space-x-2  md:space-x-4">
                     <img src={logo} alt=" Logo " className=" h-6 w-6"/>
                     <h3 className=" md:text-4xl  hidden md:inline-block font-bold  font-sans">
-                        kanban
+                        Kanban
                     </h3>
                     <div className=" flex items-center ">
                         <h3 className=" truncate max-w-[200px] md:text-2xl text-xl font-bold md:ml-20 font-sans  ">
                             {board ? board.name : boards[0].name}
+
 
                         </h3>
                         <img
@@ -75,7 +76,15 @@ const Header = ({setBoardModalOpen, boardModalOpen}) => {
 
                 {/* Right Side */}
                 <div className="flex space-x-4 items-center md:space-x-6">
-                    <button className="hidden md:block button">+Add New Task</button>
+                    <button
+                        onClick={
+                            () => {
+                                setOpenAddEditTask(state => !state)
+                            }
+                        }
+                        className="hidden md:block button">
+                        +Add New Task
+                    </button>
 
                     <button onClick={
                         () => {
@@ -95,8 +104,8 @@ const Header = ({setBoardModalOpen, boardModalOpen}) => {
 
                     {
                         isElipsisOpen && <ElipsisMenu setOpenDeleteModal={setOpenDeleteModal}
-                                                   setOpenEditModal={setOpenEditModal}
-                                                   type='Boards'/>
+                                                      setOpenEditModal={setOpenEditModal}
+                                                      type='Boards'/>
                     }
                 </div>
             </header>
@@ -113,7 +122,8 @@ const Header = ({setBoardModalOpen, boardModalOpen}) => {
             }
 
             {
-                isDeleteModalOpen && <DeleteModal type='board' title={board.name} onDeleteBtnClick={onDeleteBtnClick} setIsDeleteModalOpen={setIsDeleteModalOpen}/>
+                isDeleteModalOpen && <DeleteModal type='board' title={board.name} onDeleteBtnClick={onDeleteBtnClick}
+                                                  setIsDeleteModalOpen={setIsDeleteModalOpen}/>
             }
         </div>
     );

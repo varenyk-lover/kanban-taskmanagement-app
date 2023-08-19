@@ -61,9 +61,7 @@ const Header = ({setBoardModalOpen, boardModalOpen}) => {
                     </h3>
                     <div className=" flex items-center ">
                         <h3 className=" truncate max-w-[200px] md:text-2xl text-xl font-bold md:ml-20 font-sans  ">
-                            {board ? board.name : boards[0].name}
-
-
+                            {board.name}
                         </h3>
                         <img
                             src={openDropdown ? iconUp : iconDown}

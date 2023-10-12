@@ -34,11 +34,11 @@ const Column = ({colIndex}) => {
                 <div className={`rounded-full w-4 h-4 ${color} `}>
                 </div>
                 <p className=" font-semibold  tracking-widest md:tracking-[.2em] text-[#828fa3]">
-                    {col.name} ({col.tasks.length})
+                    {col.name} ({col?.tasks?.length})
                 </p>
             </div>
             {
-                col.tasks.map((task, index) => (
+                col.tasks?.map((task, index) => (
                     <Task key={index} taskIndex={index} colIndex={colIndex}/>
                 ))
             }

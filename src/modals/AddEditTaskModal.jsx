@@ -4,7 +4,7 @@ import crossIcon from '../assets/icon-cross.svg'
 import {useDispatch, useSelector} from "react-redux";
 import boardsSlice from "../redux/boardsSlice";
 
-const AddEditTaskModal = ({type, device, setOpenAddEditTask, prevColIndex = 0, taskIndex}) => {
+const AddEditTaskModal = ({type, device, setOpenAddEditTask, setIsTaskModalOpen, prevColIndex = 0, taskIndex}) => {
 
     const dispatch = useDispatch();
     const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -21,9 +21,20 @@ const AddEditTaskModal = ({type, device, setOpenAddEditTask, prevColIndex = 0, t
     const [status, setStatus] = useState(columns[prevColIndex].name);
     const [newColIndex, setNewColIndex] = useState(prevColIndex);
     const [subtasks, setSubtasks] = useState([
-        { title: "", isCompleted: false, id: uuidv4() },
-        { title: "", isCompleted: false, id: uuidv4() },
+        {title: "", isCompleted: false, id: uuidv4()},
+        {title: "", isCompleted: false, id: uuidv4()},
     ]);
+
+    if (type === 'edit' && isFirstLoad) {
+        setSubtasks(
+            task.subtasks.map((subtask) => {
+                return {...subtask, id: uuidv4()}
+            })
+        )
+        setTitle(task.title);
+        setDescription(task.description);
+        setIsFirstLoad(false);
+    }
 
     const onChange = (id, newValue) => {
         setSubtasks((prevState) => {
@@ -65,7 +76,7 @@ const AddEditTaskModal = ({type, device, setOpenAddEditTask, prevColIndex = 0, t
     if (type === "edit" && isFirstLoad) {
         setSubtasks(
             task.subtasks.map((subtask) => {
-                return { ...subtask, id: uuidv4() };
+                return {...subtask, id: uuidv4()};
             })
         );
         setTitle(task.title);
@@ -100,8 +111,6 @@ const AddEditTaskModal = ({type, device, setOpenAddEditTask, prevColIndex = 0, t
     };
 
 
-
-
     return (
         <div
             className={
@@ -116,7 +125,7 @@ const AddEditTaskModal = ({type, device, setOpenAddEditTask, prevColIndex = 0, t
                 }
                 setOpenAddEditTask(false);
             }}
-            >
+        >
 
 
             {/*    Modal Section*/}
@@ -212,7 +221,7 @@ const AddEditTaskModal = ({type, device, setOpenAddEditTask, prevColIndex = 0, t
 
                     <button onClick={() => {
                         const isValid = validate();
-                        if(isValid) {
+                        if (isValid) {
                             onSubmit(type);
                             setOpenAddEditTask(false);
                         }

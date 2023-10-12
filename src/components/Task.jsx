@@ -38,7 +38,9 @@ const Task = ({taskIndex, colIndex}) => {
             </div>
             {
                 isTaskModalOpen && (
-                    <TaskModal/>
+                    <TaskModal
+                    colIndex={colIndex} taskIndex={taskIndex}  setIsTaskModalOpen={setIsTaskModalOpen}
+                    />
                 )
             }
         </div>

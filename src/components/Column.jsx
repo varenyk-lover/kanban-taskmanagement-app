@@ -20,7 +20,7 @@ const Column = ({colIndex}) => {
 
     const dispatch = useDispatch();
     const boards = useSelector(state => state.boards);
-    const board = boards.find(board =>  board.isActive);
+    const board = boards.find(board => board.isActive);
     const col = board.columns.find((col, i) => i === colIndex);
 
     useEffect(() => {
@@ -29,12 +29,14 @@ const Column = ({colIndex}) => {
     }, [dispatch]);
 
     return (
-        <div className='scrollbar-hide mx-5 pt-[90px] min-w-[280px]'>
-            <p className='font-semibold flex items-center gap-2 tracking-widest md:tracking-[2em] text-[#828fa3]'>
-                <div className={`rounded-full w-4 h-4 ${color}`}/>
-                {col.name} ({col.tasks.length})
-            </p>
-
+        <div className='scrollbar-hide mx-5 pt-[90px] min-w-[280px] '>
+            <div className='flex  items-center  gap-2'>
+                <div className={`rounded-full w-4 h-4 ${color} `}>
+                </div>
+                <p className=" font-semibold  tracking-widest md:tracking-[.2em] text-[#828fa3]">
+                    {col.name} ({col.tasks.length})
+                </p>
+            </div>
             {
                 col.tasks.map((task, index) => (
                     <Task key={index} taskIndex={index} colIndex={colIndex}/>

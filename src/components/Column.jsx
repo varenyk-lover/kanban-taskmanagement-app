@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {shuffle} from 'lodash';
 import {useDispatch, useSelector} from "react-redux";
 import Task from "./Task";
+import boardsSlice from "../redux/boardsSlice";
 
 const Column = ({colIndex}) => {
     const colors = [
@@ -28,22 +29,38 @@ const Column = ({colIndex}) => {
         setColor(shuffle(colors).pop());
     }, [dispatch]);
 
+    const handleOnDrop = (e) => {
+        const { prevColIndex, taskIndex } = JSON.parse(
+            e.dataTransfer.getData("text")
+        );
+
+        if (colIndex !== prevColIndex) {
+            dispatch(
+                boardsSlice.actions.dragTask({ colIndex, prevColIndex, taskIndex })
+            );
+        }
+    };
+
+    const handleOnDragOver = (e) => {
+        e.preventDefault();
+    };
+
     return (
-        <div className='scrollbar-hide mx-5 pt-[90px] min-w-[280px] '>
-            <div className='flex  items-center  gap-2'>
-                <div className={`rounded-full w-4 h-4 ${color} `}>
-                </div>
-                <p className=" font-semibold  tracking-widest md:tracking-[.2em] text-[#828fa3]">
-                    {col.name} ({col?.tasks?.length})
-                </p>
-            </div>
-            {
-                col.tasks?.map((task, index) => (
-                    <Task key={index} taskIndex={index} colIndex={colIndex}/>
-                ))
-            }
+        <div
+            onDrop={handleOnDrop}
+            onDragOver={handleOnDragOver}
+            className="scrollbar-hide   mx-5 pt-[90px] min-w-[280px] "
+        >
+            <p className=" font-semibold flex  items-center  gap-2 tracking-widest md:tracking-[.2em] text-[#828fa3]">
+                <div className={`rounded-full w-4 h-4 ${color} `} />
+                {col.name} ({col.tasks.length})
+            </p>
+
+            {col.tasks.map((task, index) => (
+                <Task key={index} taskIndex={index} colIndex={colIndex} />
+            ))}
         </div>
     );
-};
+}
 
 export default Column;

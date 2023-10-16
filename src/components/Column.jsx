@@ -4,7 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import Task from "./Task";
 import boardsSlice from "../redux/boardsSlice";
 
-const Column = ({colIndex}) => {
+const Column = ({ colIndex,
+                    prevColIndex,
+                    taskIndex}) => {
     const colors = [
         'bg-red-500',
         'bg-orange-500',
@@ -28,7 +30,7 @@ const Column = ({colIndex}) => {
         //it should work just one time
         setColor(shuffle(colors).pop());
     }, [dispatch]);
-
+/*
     const handleOnDrop = (e) => {
         const { prevColIndex, taskIndex } = JSON.parse(
             e.dataTransfer.getData("text")
@@ -43,7 +45,31 @@ const Column = ({colIndex}) => {
 
     const handleOnDragOver = (e) => {
         e.preventDefault();
+    };*/
+
+    //FOR DRAGGING AND BETWEEN DIFFERENT COLUMNS
+    const handleOnDrop = (e) => {
+        e.preventDefault();
+        const data = JSON.parse(e.dataTransfer.getData("text"));
+
+        if (colIndex !== data.prevColIndex) {
+            // BETWEEN DIFFERENT COLUMNS
+            dispatch(
+                boardsSlice.actions.dragTask({
+                    colIndex,
+                    prevColIndex: data.prevColIndex,
+                    taskIndex: data.taskIndex,
+                })
+            );
+        }
+
+
     };
+
+    const handleOnDragOver = (e) => {
+        e.preventDefault();
+    };
+
 
     return (
         <div
@@ -52,7 +78,7 @@ const Column = ({colIndex}) => {
             className="scrollbar-hide   mx-5 pt-[90px] min-w-[280px] "
         >
             <p className=" font-semibold flex  items-center  gap-2 tracking-widest md:tracking-[.2em] text-[#828fa3]">
-                <div className={`rounded-full w-4 h-4 ${color} `} />
+                <span className={`rounded-full w-4 h-4 ${color} `} />
                 {col.name} ({col.tasks.length})
             </p>
 

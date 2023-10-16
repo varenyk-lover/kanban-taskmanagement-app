@@ -41,7 +41,7 @@ const Center = ({boardModalOpen, setBoardModalOpen}) => {
         }>
             {
                 windowSize[0] >= 768 && (
-                    <SideBar/>
+                    <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen}/>
                 )
             }
 

@@ -64,8 +64,9 @@ const boardsSlice = createSlice({
             const newCol = board.columns.find((col, index) => index === newColIndex);
             newCol.tasks.push(task);
         },
+        //FOR DRAGGING BETWEEN DIFFERENT COLUMN
         dragTask: (state, action) => {
-            const {colIndex, prevColIndex, taskIndex} = action.payload;
+            const {colIndex, prevColIndex, taskIndex,newPosition} = action.payload;
             const board = state.find((board) => board.isActive);
             const prevCol = board.columns.find((col, i) => i === prevColIndex);
             const task = prevCol.tasks.splice(taskIndex, 1)[0];
@@ -81,8 +82,46 @@ const boardsSlice = createSlice({
              його значення, яке потім зберігається у змінній draggable task. Це корисно, коли ви хочете зберегти видалений
               елемент для подальшого використання, наприклад, для переміщення його на іншу позицію, як у випадку з
               реалізацією методу drag and drop.*/
-            board.columns.find((col, i) => i === colIndex).tasks.push(task);
+
+            //Додає переміщене завдання в кінець колонки:
+            // board.columns.find((col, i) => i === colIndex).tasks.push(task);
+
+            //Додає в потрібне місце
+            const newCol = board.columns.find((col, i) => i === colIndex);
+            // Видаляє 0 елементів по індексу newPosition і вставляє task:
+            newCol.tasks.splice(newPosition, 0, task);//Тобто: Додає переміщене завдання в нову колонку на потрібне місце:
         },
+        //FOR DRAGGING IN ONE COLUMN
+  /*      dragTaskInColumn: (state, action) => {
+            const { colIndex, prevColIndex, taskIndex } = action.payload;
+            const board = state.find((board) => board.isActive);
+            const column = board.columns.find((col, i) => i === colIndex);
+            const task = column.tasks[taskIndex];
+
+            // Видаліть завдання з попереднього стовпця
+            const prevColumn = board.columns.find((col, i) => i === prevColIndex);
+            prevColumn.tasks.splice(taskIndex, 1);
+
+            // Додайте завдання в новий стовпець
+            column.tasks.push(task);
+        },
+*/
+        dragTaskInColumn: (state, action) => {
+            const { colIndex, prevColIndex, taskIndex, newPosition } = action.payload;
+            const board = state.find((board) => board.isActive);
+            const column = board.columns.find((col, i) => i === colIndex);
+            const task = column.tasks[taskIndex];
+
+            // Перевіряє чи завдання в тому ж стовпці в бере завдання
+            const prevColumn = board.columns.find((col, i) => i === prevColIndex);
+            prevColumn.tasks.splice(taskIndex, 1);
+
+            // Видаляє 0 елементів по індексу newPosition і вставляє task
+            // Тобто: Додає завдання в новий стовпець на вказану позицію
+            column.tasks.splice(newPosition, 0, task);
+        },
+
+
         setSubtaskCompleted: (state, action) => {
             const payload = action.payload;
             const board = state.find((board) => board.isActive);

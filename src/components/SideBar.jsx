@@ -8,6 +8,7 @@ import {Switch} from "@headlessui/react";
 import darkIcon from "../assets/icon-dark-theme.svg";
 import hideSidebarIcon from '../assets/icon-hide-sidebar.svg';
 import showSidebarIcon from '../assets/icon-show-sidebar.svg';
+import AddEditBoardModal from "../modals/AddEditBoardModal";
 
 const SideBar = ({isSideBarOpen, setIsSideBarOpen}) => {
     const dispatch = useDispatch();
@@ -70,7 +71,11 @@ const SideBar = ({isSideBarOpen, setIsSideBarOpen}) => {
                                     ))}
 
 
-                                    <div className={`flex items-baseline space-x-2 mr-8 rounded-r-full duration-500 
+                                    <div
+                                        onClick={() => {
+                                            setIsBoardModalOpen(true)
+                                        }}
+                                        className={`flex items-baseline space-x-2 mr-8 rounded-r-full duration-500 
                                     easy-in-out cursor-pointer text-[#635fc7] px-5 py-4
 hover:bg-[#635fc71a] hover:text-[#635fc7] dark:hover:bg-white`}>
                                         <img src={boardIcon} className='h-4'/>
@@ -127,6 +132,8 @@ hover:bg-[#635fc71a] hover:text-[#635fc7] dark:hover:bg-white`}>
                         </div>
                     )}
                 </div>
+
+                {isBoardModalOpen && <AddEditBoardModal type='add' setBoardModalOpen={setIsSideBarOpen}/> }
             </div>
 
         </div>

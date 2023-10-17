@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Center from "./components/Center";
+import Home from "./components/Home";
 import Header from "./components/Header";
 import "./index.css";
 import {useDispatch, useSelector} from "react-redux";
@@ -24,8 +24,8 @@ function App() {
                     <>
                         {/* Header Section*/}
                         <Header boardModalOpen={boardModalOpen} setBoardModalOpen={setBoardModalOpen}/>
-                        {/*Center Section*/}
-                        <Center  boardModalOpen={boardModalOpen} setBoardModalOpen={setBoardModalOpen}/>
+                        {/*Home Section*/}
+                        <Home boardModalOpen={boardModalOpen} setBoardModalOpen={setBoardModalOpen}/>
                     </>
                     :
                     <>

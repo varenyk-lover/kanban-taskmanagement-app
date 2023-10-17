@@ -5,7 +5,7 @@ import Column from "./Column";
 import EmptyBoard from "./EmptyBoard";
 import AddEditBoardModal from "../modals/AddEditBoardModal";
 
-const Center = ({boardModalOpen, setBoardModalOpen}) => {
+const Home = ({boardModalOpen, setBoardModalOpen}) => {
     const [isSideBarOpen, setIsSideBarOpen] = useState(true);
     const [windowSize, setWindowSize] = useState(
         [
@@ -34,14 +34,15 @@ const Center = ({boardModalOpen, setBoardModalOpen}) => {
 
     return (
         <div className={
-            windowSize[0] >= 768 && isSideBarOpen ?
-                'bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c]  overflow-x-scroll gap-6 ml-[261px]'
+            windowSize[0] >= 768 && isSideBarOpen
+                ? 'bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c]  overflow-x-scroll gap-6 ml-[261px]'
                 : 'bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c]  overflow-x-scroll gap-6 '
 
         }>
             {
                 windowSize[0] >= 768 && (
-                    <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen}/>
+                    <SideBar isSideBarOpen={isSideBarOpen} setIsSideBarOpen={setIsSideBarOpen}
+                    />
                 )
             }
 
@@ -80,4 +81,4 @@ const Center = ({boardModalOpen, setBoardModalOpen}) => {
     );
 };
 
-export default Center;
+export default Home;

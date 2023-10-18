@@ -8,8 +8,7 @@ import {Switch} from "@headlessui/react";
 import useDarkMode from "../Hooks/useDarkMode";
 import boardsSlice from "../redux/boardsSlice";
 
-
-function HeaderDropDown({setOpenDropdown, setBoardModalOpen}) {
+const HeaderDropdown = ({setOpenDropdown, setIsBoardModalOpen}) => {
     const dispatch = useDispatch();
 
     const [colorTheme, setTheme] = useDarkMode();
@@ -61,7 +60,7 @@ function HeaderDropDown({setOpenDropdown, setBoardModalOpen}) {
                     <div
                         className="cursor-pointer flex items-baseline space-x-2  text-[#635fc7] px-5 py-4"
                         onClick={() => {
-                            setBoardModalOpen(true);
+                            setIsBoardModalOpen(true);
                             setOpenDropdown(false);
                         }}>
                         <img src={boardIcon} className="   filter-white  h-4 "/>
@@ -97,4 +96,4 @@ function HeaderDropDown({setOpenDropdown, setBoardModalOpen}) {
     );
 }
 
-export default HeaderDropDown;
+export default HeaderDropdown;

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import TaskModal from "../modals/TaskModal";
 import boardsSlice from "../redux/boardsSlice";
 
-function Task({ colIndex, taskIndex }) {
+const Task = ({colIndex, taskIndex}) => {
 
     const dispatch = useDispatch();
     const boards = useSelector((state) => state.boards);
@@ -13,8 +13,10 @@ function Task({ colIndex, taskIndex }) {
     const task = col.tasks.find((task, i) => i === taskIndex);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
+
     let completed = 0;
-    let subtasks = task && task.subtasks ? task.subtasks : []; // Перевірка на наявність 'subtasks'
+    let subtasks =  task.subtasks;
+    // let subtasks = task && task.subtasks ? task.subtasks : []; // Перевірка на наявність 'subtasks'
     subtasks.forEach((subtask) => {
         if (subtask.isCompleted) {
             completed++;
@@ -33,6 +35,7 @@ function Task({ colIndex, taskIndex }) {
 
     //FOR DRAGGING IN ONE COLUMN
     const [draggedTaskIndex, setDraggedTaskIndex] = useState(null);
+
     //For start index on drag
     const handleOnDragStart = (e) => {
         setDraggedTaskIndex(taskIndex);
@@ -46,7 +49,7 @@ function Task({ colIndex, taskIndex }) {
         e.preventDefault();
     };
 
-    //After drag, when we release the mouse cursor and drop task card
+
 /*
     const handleOnDrop = (e) => {
         e.preventDefault();
@@ -64,6 +67,8 @@ function Task({ colIndex, taskIndex }) {
         }
     };
 */
+
+    //After drag, when we release the mouse cursor and drop task card
     const handleOnDrop = (e) => {
         e.preventDefault();
         const data = JSON.parse(e.dataTransfer.getData('text'));

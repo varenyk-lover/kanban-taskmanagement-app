@@ -107,7 +107,7 @@ const Task = ({colIndex, taskIndex}) => {
             >
                 <p className=" font-bold tracking-wide ">{task.title}</p>
                 <p className=" font-bold text-xs tracking-tighter mt-2 text-gray-500">
-                    {completed} of {subtasks.length} completed tasks
+                    {completed} of {subtasks.length} completed subtasks
                 </p>
             </div>
             {isTaskModalOpen && (

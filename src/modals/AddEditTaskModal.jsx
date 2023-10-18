@@ -7,7 +7,8 @@ import boardsSlice from "../redux/boardsSlice";
 const AddEditTaskModal = ({type, device, setIsTaskModalOpen, setIsAddTaskModalOpen, taskIndex, prevColIndex = 0}) => {
     const dispatch = useDispatch();
     const [isFirstLoad, setIsFirstLoad] = useState(true);
-    const [isValid, setIsValid] = useState(true);
+
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const board = useSelector((state) => state.boards).find(
@@ -20,8 +21,7 @@ const AddEditTaskModal = ({type, device, setIsTaskModalOpen, setIsAddTaskModalOp
     const [status, setStatus] = useState(columns[prevColIndex].name);
     const [newColIndex, setNewColIndex] = useState(prevColIndex);
     const [subtasks, setSubtasks] = useState([
-        { title: "", isCompleted: false, id: uuidv4() },
-        { title: "", isCompleted: false, id: uuidv4() },
+        {title: "", isCompleted: false, id: uuidv4()},
     ]);
 
     const onChangeSubtasks = (id, newValue) => {
@@ -37,28 +37,51 @@ const AddEditTaskModal = ({type, device, setIsTaskModalOpen, setIsAddTaskModalOp
         setStatus(e.target.value);
         setNewColIndex(e.target.selectedIndex);
     };
+    /*    const [isValid, setIsValid] = useState(true);
+        const [errors, setErrors] = useState({
+            title: false,
+            subtask.title
+        });*/
+
+    const [errors, setErrors] = useState({
+        title: false,
+        subtasks: subtasks.map(() => false), // Додайте помилки для кожної підзадачі
+    });
 
     const validate = () => {
-        setIsValid(false);
-        if (!title.trim()) {
-            return false;
+        const newErrors = {
+            title: !title.trim(),
+            subtasks: subtasks.map((subtask) => !subtask.title.trim()),
+        };
 
-        }
+        setErrors(newErrors);
 
-        for (let i = 0; i < subtasks.length; i++) {
-            if (!subtasks[i].title.trim()) {
-                return false;
-                console.log('not valid subtask');
-            }
-        }
-        setIsValid(true);
-        return true;
+        return !newErrors.title && !newErrors.subtasks.includes(true);
     };
+
+    /*
+
+        const validate = () => {
+            setIsValid(false);
+            if (!title.trim()) {
+             return false
+            }
+
+            for (let i = 0; i < subtasks.length; i++) {
+                if (!subtasks[i].title.trim()) {
+                    return false;
+                    console.log('not valid subtask');
+                }
+            }
+            setIsValid(true);
+            return true;
+        };*/
+
 
     if (type === "edit" && isFirstLoad) {
         setSubtasks(
             task.subtasks.map((subtask) => {
-                return { ...subtask, id: uuidv4() };
+                return {...subtask, id: uuidv4()};
             })
         );
         setTitle(task.title);
@@ -131,10 +154,19 @@ const AddEditTaskModal = ({type, device, setIsTaskModalOpen, setIsAddTaskModalOp
                         onChange={(e) => setTitle(e.target.value)}
                         id="task-name-input"
                         type="text"
-                        className=" bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0  "
+                        onBlur={validate}
+                        required
+                        className={errors.title ? `bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm  border-[0.5px] 
+                            border-red-500 focus:outline-red-500 outline-1  ring-0  `
+                            : `bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm
+                        border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0 `}
+                        /*   className={ `bg-transparent  px-4 py-2 outline-none focus:border-0 rounded-md text-sm
+                           border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-1  ring-0 `}*/
                         placeholder=" e.g Take coffee break"
                     />
-
+                    {errors.title && (
+                        <div className=' text-xs text-red-500'>Enter task name</div>
+                    )}
                 </div>
 
                 {/* Description */}
@@ -161,15 +193,22 @@ const AddEditTaskModal = ({type, device, setIsTaskModalOpen, setIsAddTaskModalOp
                     </label>
 
                     {subtasks.map((subtask, index) => (
-                        <div key={index} className=" flex items-center w-full ">
+                        <div key={index}>
+                            <div  className=" flex items-center w-full ">
                             <input
                                 onChange={(e) => {
                                     onChangeSubtasks(subtask.id, e.target.value);
                                 }}
                                 type="text"
                                 value={subtask.title}
-                                className=" bg-transparent outline-none focus:border-0 flex-grow px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px]  "
+
+                                // className=" bg-transparent outline-none focus:border-0 flex-grow px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px]  "
                                 placeholder=" e.g Take coffee break"
+                                onBlur={validate}
+                                required
+                                className={errors.subtasks[index] ? `bg-transparent outline-none focus:border-0 flex-grow px-4 py-2 rounded-md text-sm  border-[0.5px]  outline-[1px]
+                            border-red-500 focus:outline-red-500    `
+                                    : `bg-transparent outline-none focus:border-0 flex-grow px-4 py-2 rounded-md text-sm  border-[0.5px] border-gray-600 focus:outline-[#635fc7] outline-[1px]  `}
                             />
                             <img
                                 src={crossIcon}
@@ -178,6 +217,10 @@ const AddEditTaskModal = ({type, device, setIsTaskModalOpen, setIsAddTaskModalOp
                                 }}
                                 className=" m-4 cursor-pointer "
                             />
+                            </div>
+                             {errors.subtasks[index] && (
+                                 <div className=' text-xs text-red-500'>Enter subtask name or delete it</div>
+                             )}
                         </div>
                     ))}
 
@@ -186,7 +229,7 @@ const AddEditTaskModal = ({type, device, setIsTaskModalOpen, setIsAddTaskModalOp
                         onClick={() => {
                             setSubtasks((state) => [
                                 ...state,
-                                { title: "", isCompleted: false, id: uuidv4() },
+                                {title: "", isCompleted: false, id: uuidv4()},
                             ]);
                         }}
                     >
